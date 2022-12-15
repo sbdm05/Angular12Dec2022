@@ -1,0 +1,54 @@
+<table class="table" *ngIf='collection'>
+  <thead>
+    <tr>
+      <!-- tableau headers -->
+      <th *ngFor='let i of headers' scope="col">
+        <!-- interpolation -->
+        {{ i }}
+      </th>
+
+    </tr>
+  </thead>
+  <tbody>
+    <!-- itérer dans collection -->
+    <tr *ngFor='let item of collection;'>
+      <!-- ajouter le bouton  -->
+      <td><button (click)='goToEdit(item.id)'>Editer</button></td>
+      <td>{{ item.typePresta | uppercase}}</td>
+      <td>{{ item.client}}</td>
+      <td>{{ item.nbJours}}</td>
+      <td>{{ item.tjmHt}}</td>
+      <td>{{ item.tjmHt| total :item.nbJours | currency }}</td>
+      <td>{{ item.tjmHt| total :item.nbJours :item.tva | currency }}</td>
+
+      <!--
+      bonus : on change le style des balises <td> en fonction de item.state
+      ces styles existent dans le scss de page-list-orders
+      -->
+      <td
+      [ngClass]="{
+        'state-cancelled': item.state === 'CANCELLED',
+        'state-confirmed': item.state === 'CONFIRMED',
+        'state-option': item.state === 'OPTION'
+      }"
+      >
+        <select (change)='changeState(item, $event)'>
+          <option *ngFor='let state of states' [value]='state' [selected]='state === item.state'>{{state}}</option>
+        </select>
+      </td>
+    </tr>
+<!-- change detection -->
+  </tbody>
+
+  <!-- afficher le bouton -->
+  <!--  -->
+  <app-btn
+  label='Ajouter'
+  route='/orders/add'
+  styleBtn='btn btn-danger'
+  >
+  <!-- envoyer du contenu -->
+  </app-btn>
+</table>
+
+<p *ngIf="!collection">Loading....</p>

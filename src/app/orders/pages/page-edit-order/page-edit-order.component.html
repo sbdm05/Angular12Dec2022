@@ -1,0 +1,11 @@
+<div class="container" *ngIf='item'>
+  <h1>Editer une commande</h1>
+  <!--
+  titre
+  composant formulaire
+  -->
+  <!-- récupérer un order existant et le passer à app-form -->
+  <app-form-order [init]='item' (submitted)='onEdit($event)'></app-form-order>
+</div>
+
+<p *ngIf='!item'>Loading...</p>
